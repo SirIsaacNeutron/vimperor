@@ -1,7 +1,6 @@
-#include "screen.h"
+#include "editor.h"
 
 int main() {
-	Screen s{"makefile"};
-	s.display();
+	Editor e{"makefile"};	
 	return 0;
 }
