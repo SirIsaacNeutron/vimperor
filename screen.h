@@ -2,15 +2,15 @@
 #define SCREEN_H
 
 #include <ncurses.h>
+#include <vector>
+#include <string>
 
-class Screen {
-	FILE* file;
-public:
-	Screen(const char* file_name = "") noexcept;
+struct Screen {
+	Screen() noexcept;
 	Screen(const Screen& s) = delete;
 	Screen& operator=(const Screen& s) = delete;
 
-	void display() const noexcept;
+	void display(const std::vector<std::string>& file_contents) const noexcept;
 
 	~Screen();
 };

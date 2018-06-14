@@ -1,16 +1,15 @@
 #include "screen.h"
 
-Screen::Screen(const char* file_name) noexcept 
-: file{fopen(file_name, "r")} {
+Screen::Screen() noexcept {
 	initscr();
 	noecho();
 	raw();
 }
 
-void Screen::display() const noexcept {
-	char character;
-	while ((character = getc(file)) != EOF) {
-		printw("%c", character);
+void Screen::display(const std::vector<std::string>& file_contents) const noexcept {
+	for (const auto& line : file_contents) {
+		printw("%s", line.c_str());
+		printw("\n");
 	}
 	refresh();
 	move(0, 0); // Set cursor to top-left corner
@@ -19,5 +18,4 @@ void Screen::display() const noexcept {
 
 Screen::~Screen() {
 	endwin();
-	fclose(file);
 }
