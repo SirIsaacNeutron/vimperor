@@ -13,7 +13,10 @@ void Screen::display(const std::vector<std::string>& file_contents) const noexce
 	}
 	refresh();
 	move(0, 0); // Set cursor to top-left corner
-	getch(); // Pause so the user can see the file
+}
+
+void Screen::move_cursor(const Cursor& cursor) const noexcept {
+	move(cursor.y, cursor.x);		
 }
 
 Screen::~Screen() {

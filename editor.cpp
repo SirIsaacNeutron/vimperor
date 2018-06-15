@@ -2,7 +2,7 @@
 
 Editor::Editor(const char* file_name) noexcept
 : file{fopen(file_name, "r+")}, file_contents{create_file_contents()},
-screen{} {
+screen{}, cursor{0, 0} {
 	screen.display(file_contents);
 }
 
@@ -20,6 +20,31 @@ std::vector<std::string> Editor::create_file_contents() noexcept {
 		}
 	}
 	return file_contents;
+}
+
+void Editor::process_keypress(int character) noexcept {
+	switch (character) {
+		case 'q':
+			endwin();
+			exit(1);
+			break;
+		case 'l':
+			++cursor.x;
+			screen.move_cursor(cursor);
+			break;
+		case 'k':
+			--cursor.y;
+			screen.move_cursor(cursor);
+			break;
+		case 'j':
+			++cursor.y;	
+			screen.move_cursor(cursor);
+			break;
+		case 'h':
+			--cursor.x;
+			screen.move_cursor(cursor);
+			break;
+	}
 }
 
 Editor::~Editor() {
