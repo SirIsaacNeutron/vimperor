@@ -10,6 +10,7 @@
 struct Screen {
 	int rows;
 	int cols;
+	int times_scrolled_down;
 
 	Screen() noexcept;
 	Screen(const Screen& s) = delete;
@@ -18,7 +19,9 @@ struct Screen {
 	void display(std::vector<std::string>::iterator begin) const noexcept;
 	void show_first_display(std::vector<std::string>::iterator 
 			begin) const noexcept;
+
 	void move_cursor(const Cursor& cursor) const noexcept;
+	void scroll_down(std::vector<std::string>::iterator begin) noexcept;
 
 	~Screen();
 };

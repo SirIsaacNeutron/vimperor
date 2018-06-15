@@ -1,11 +1,12 @@
 #include "screen.h"
 
 Screen::Screen() noexcept 
-: rows{}, cols{} {
+: rows{}, cols{}, times_scrolled_down{} {
 	initscr();
 	noecho();
 	raw();
 	getmaxyx(stdscr, rows, cols);
+	scrollok(stdscr, true);
 }
 
 void Screen::display(std::vector<std::string>::iterator begin) const noexcept {
@@ -25,6 +26,12 @@ void Screen::show_first_display(std::vector<std::string>::iterator
 
 void Screen::move_cursor(const Cursor& cursor) const noexcept {
 	move(cursor.y, cursor.x);		
+}
+
+void Screen::scroll_down(std::vector<std::string>::iterator
+		begin) noexcept {
+	display(begin);
+	++times_scrolled_down;
 }
 
 Screen::~Screen() {
