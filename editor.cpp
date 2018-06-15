@@ -3,7 +3,7 @@
 Editor::Editor(const char* file_name) noexcept
 : file{fopen(file_name, "r+")}, file_contents{create_file_contents()},
 screen{}, cursor{0, 0} {
-	screen.display(file_contents);
+	screen.show_first_display(std::begin(file_contents));
 }
 
 std::vector<std::string> Editor::create_file_contents() noexcept {
