@@ -10,7 +10,6 @@
 struct Screen {
 	int rows;
 	int cols;
-	int times_scrolled_down;
 
 	Screen() noexcept;
 	Screen(const Screen& s) = delete;

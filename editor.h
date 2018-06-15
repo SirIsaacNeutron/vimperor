@@ -13,6 +13,7 @@ class Editor {
 	std::vector<std::string> file_contents;
 	Screen screen;
 	Cursor cursor;
+	std::size_t file_contents_index;
 
 	std::vector<std::string> create_file_contents() noexcept;
 public:
