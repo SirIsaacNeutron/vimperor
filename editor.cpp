@@ -36,29 +36,33 @@ void Editor::process_keypress(int character) noexcept {
 			--cursor.y;
 			screen.move_cursor(cursor);
 			break;
-		case 'j': {
-			if (cursor.y != screen.rows) {
-				++cursor.y;	
-			}
-			else {
-				std::size_t file_contents_index = (cursor.y
-						* (screen.times_scrolled_down + 1));
-				if (cursor.y == screen.rows) {
-					if (file_contents_index < file_contents.size()) {
-						screen.scroll_down(std::begin(file_contents)
-								+ file_contents_index - 1);	
-						cursor.y = 0;
-					}
-				}
-			}
-			screen.move_cursor(cursor);
+		case 'j':
+			move_cursor_down();
 			break;
-		}
+		
 		case 'h':
 			--cursor.x;
 			screen.move_cursor(cursor);
 			break;
 	}
+}
+
+void Editor::move_cursor_down() noexcept {
+	if (cursor.y != screen.rows) {
+		++cursor.y;	
+	}
+	else {
+		std::size_t file_contents_index = (cursor.y
+				* (screen.times_scrolled_down + 1));
+		if (cursor.y == screen.rows) {
+			if (file_contents_index < file_contents.size()) {
+				screen.scroll_down(std::begin(file_contents)
+						+ file_contents_index - 1);	
+				cursor.y = 0;
+			}
+		}
+	}
+	screen.move_cursor(cursor);
 }
 
 Editor::~Editor() {

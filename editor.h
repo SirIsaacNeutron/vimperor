@@ -21,6 +21,11 @@ public:
 	Editor& operator=(const Editor& e) = delete;
 
 	void process_keypress(int character) noexcept;
+	void move_cursor_down() noexcept;
+	void move_cursor_up() noexcept;
+	void move_cursor_left() noexcept;
+	void move_cursor_right() noexcept;
+
 	
 	~Editor();
 };
