@@ -1,2 +1,9 @@
-vimperor: main.cpp screen.cpp editor.cpp
-	g++ -O3 -std=c++14 -Wall -Werror -Wpedantic -Weffc++ screen.cpp editor.cpp main.cpp -o vimperor -lncurses
+CPP_FLAGS = -std=c++14 -Wall -Werror -Wpedantic -Weffc++
+
+FILES = screen.cpp editor.cpp main.cpp
+
+vimperor: ${FILES}
+	g++ -O3 ${CPP_FLAGS} ${FILES} -o vimperor -lncurses
+
+debug: ${FILES}
+	g++ -O3 -ggdb ${CPP_FLAGS} ${FILES} -o vimperor -lncurses
