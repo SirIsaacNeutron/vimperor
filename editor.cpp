@@ -2,7 +2,7 @@
 
 Editor::Editor(const char* file_name) noexcept
 : file{fopen(file_name, "r+")}, file_contents{create_file_contents()},
-screen{}, cursor{0, 0}, file_contents_index{0} {
+screen{}, cursor{0, 0}, file_contents_index{0}, top_of_screen_index{0} {
 	screen.show_first_display(std::begin(file_contents));
 }
 
@@ -34,7 +34,6 @@ void Editor::process_keypress(int character) noexcept {
 			break;
 		case 'k':
 			move_cursor_up();
-			screen.move_cursor(cursor);
 			break;
 		case 'j':
 			move_cursor_down();
@@ -52,13 +51,13 @@ void Editor::move_cursor_up() noexcept {
 		--cursor.y;
 		--file_contents_index;
 	}
-	else {
-		if (file_contents_index != 0) {
-			--file_contents_index; 
-			screen.display(std::begin(file_contents)
-					+ file_contents_index - 1);		
-		}
+	else if (file_contents_index != 0 && top_of_screen_index != 0) {
+		--file_contents_index; 
+		--top_of_screen_index;
+		screen.display(std::begin(file_contents)
+				+ top_of_screen_index);		
 	}
+	screen.move_cursor(cursor);
 }
 
 void Editor::move_cursor_down() noexcept {
@@ -66,15 +65,12 @@ void Editor::move_cursor_down() noexcept {
 		++cursor.y;	
 		++file_contents_index;
 	}
-	else {
-		++file_contents_index;
-		if (cursor.y == screen.rows) {
-			if (file_contents_index < file_contents.size()) {
-				screen.display(std::begin(file_contents)
-						+ file_contents_index - 1);	
-				cursor.y = 0;
-			}
-		}
+	else if (file_contents_index < file_contents.size() && 
+		top_of_screen_index < file_contents.size()) {
+			++top_of_screen_index;
+			++file_contents_index;
+			screen.display(std::begin(file_contents)
+					+ top_of_screen_index);	
 	}
 	screen.move_cursor(cursor);
 }
