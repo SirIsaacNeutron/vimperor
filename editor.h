@@ -14,6 +14,7 @@ class Editor {
 	Screen screen;
 	Cursor cursor;
 	std::size_t file_contents_index;
+	std::size_t top_of_screen_index;
 
 	std::vector<std::string> create_file_contents() noexcept;
 public:
