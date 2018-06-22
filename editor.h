@@ -10,11 +10,11 @@
 
 class Editor {
 	FILE* file;
-	std::vector<std::string> file_contents;
-	Screen screen;
-	Cursor cursor;
-	std::size_t file_contents_index;
-	std::size_t top_of_screen_index;
+	std::vector<std::string> file_contents{create_file_contents()};
+	Screen screen{};
+	Cursor cursor{0, 0};
+	std::size_t file_contents_index = 0;
+	std::size_t top_of_screen_index = 0;
 
 	std::vector<std::string> create_file_contents() noexcept;
 public:
