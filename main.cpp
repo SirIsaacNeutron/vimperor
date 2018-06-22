@@ -1,7 +1,7 @@
 #include "editor.h"
 
 int main() {
-	Editor e{"editor.cpp"};	
+	Editor e{"makefile"};	
 
 	int character;
 	while (true) {

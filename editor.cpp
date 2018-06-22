@@ -3,7 +3,8 @@
 Editor::Editor(const char* file_name) noexcept
 : file{fopen(file_name, "r+")}, file_contents{create_file_contents()},
 screen{}, cursor{0, 0}, file_contents_index{0}, top_of_screen_index{0} {
-	screen.show_first_display(std::begin(file_contents));
+	screen.show_first_display(std::begin(file_contents),
+			std::end(file_contents));
 }
 
 std::vector<std::string> Editor::create_file_contents() noexcept {
@@ -55,7 +56,7 @@ void Editor::move_cursor_up() noexcept {
 		--file_contents_index; 
 		--top_of_screen_index;
 		screen.display(std::begin(file_contents)
-				+ top_of_screen_index);		
+				+ top_of_screen_index, std::end(file_contents));		
 	}
 	screen.move_cursor(cursor);
 }
@@ -70,7 +71,7 @@ void Editor::move_cursor_down() noexcept {
 			++top_of_screen_index;
 			++file_contents_index;
 			screen.display(std::begin(file_contents)
-					+ top_of_screen_index);	
+					+ top_of_screen_index, std::end(file_contents));	
 	}
 	screen.move_cursor(cursor);
 }
