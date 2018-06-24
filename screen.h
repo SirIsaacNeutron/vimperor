@@ -21,7 +21,6 @@ struct Screen {
 			begin, std::vector<std::string>::iterator end) const noexcept;
 
 	void move_cursor(const Cursor& cursor) const noexcept;
-	void scroll_down(std::vector<std::string>::iterator begin) noexcept;
 
 	~Screen();
 };
