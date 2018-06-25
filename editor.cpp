@@ -55,7 +55,7 @@ void Editor::move_cursor_up() noexcept {
 		--cursor.y;
 		--file_contents_index;
 	}
-	else if (file_contents_index != 0 && top_of_screen_index != 0) {
+	else if (file_contents_index != 0) {
 		--file_contents_index; 
 		--top_of_screen_index;
 		screen.display(std::begin(file_contents)
@@ -69,8 +69,7 @@ void Editor::move_cursor_down() noexcept {
 		++cursor.y;	
 		++file_contents_index;
 	}
-	else if (file_contents_index < file_contents.size() && 
-		top_of_screen_index < file_contents.size()) {
+	else if (file_contents_index < file_contents.size()) {
 			++top_of_screen_index;
 			++file_contents_index;
 			screen.display(std::begin(file_contents)
