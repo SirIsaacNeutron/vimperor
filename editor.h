@@ -17,17 +17,16 @@ class Editor {
 	std::size_t top_of_screen_index = 0;
 
 	std::vector<std::string> create_file_contents() noexcept;
+	void move_cursor_down() noexcept;
+	void move_cursor_up() noexcept;
+	void move_cursor_left() noexcept;
+	void move_cursor_right() noexcept;
 public:
 	Editor(const char* file_name = "") noexcept;
 	Editor(const Editor& e) = delete;
 	Editor& operator=(const Editor& e) = delete;
 
 	void process_keypress(int character) noexcept;
-	void move_cursor_down() noexcept;
-	void move_cursor_up() noexcept;
-	void move_cursor_left() noexcept;
-	void move_cursor_right() noexcept;
-
 	
 	~Editor();
 };
