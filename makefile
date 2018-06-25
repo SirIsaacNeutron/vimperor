@@ -6,4 +6,4 @@ vimperor: ${FILES}
 	g++ -O3 ${CPP_FLAGS} ${FILES} -o vimperor -lncurses
 
 debug: ${FILES}
-	g++ -O3 -ggdb ${CPP_FLAGS} ${FILES} -o vimperor -lncurses
+	g++ -ggdb ${CPP_FLAGS} ${FILES} -o vimperor -lncurses
