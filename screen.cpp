@@ -17,6 +17,9 @@ void Screen::display(std::vector<std::string>::iterator begin,
 		printw("%s", (*iterator).c_str());
 		printw("\n");
 	}
+	for (; i < rows - 1; ++i) {
+		printw("%c\n", '~');
+	}
 	refresh();
 }
 
