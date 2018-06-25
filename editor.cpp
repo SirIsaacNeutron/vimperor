@@ -29,7 +29,9 @@ void Editor::process_keypress(int character) noexcept {
 			exit(1);
 			break;
 		case 'l':
-			++cursor.x;
+			if (cursor.x < screen.cols) {
+				++cursor.x;
+			}
 			screen.move_cursor(cursor);
 			break;
 		case 'k':
@@ -40,7 +42,9 @@ void Editor::process_keypress(int character) noexcept {
 			break;
 		
 		case 'h':
-			--cursor.x;
+			if (cursor.x > 0) {
+				--cursor.x;
+			}
 			screen.move_cursor(cursor);
 			break;
 	}
