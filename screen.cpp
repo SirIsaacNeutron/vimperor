@@ -11,7 +11,7 @@ Screen::Screen() noexcept
 
 void Screen::display(std::vector<std::string>::iterator begin,
 		std::vector<std::string>::iterator end) const noexcept {
-	int i = 0;
+	std::size_t i = 0;
 	for (auto iterator = begin; i < rows && iterator != end; 
 	++iterator, ++i) {
 		printw("%s", (*iterator).c_str());

@@ -8,8 +8,8 @@
 #include "cursor.h"
 
 struct Screen {
-	int rows;
-	int cols;
+	std::size_t rows;
+	std::size_t cols;
 
 	Screen() noexcept;
 	Screen(const Screen& s) = delete;
