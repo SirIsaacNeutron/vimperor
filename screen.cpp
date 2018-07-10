@@ -14,11 +14,13 @@ void Screen::display(std::vector<std::string>::iterator begin,
 	std::size_t i = 0;
 	for (auto iterator = begin; i < rows && iterator != end; 
 	++iterator, ++i) {
-		printw("%s", (*iterator).c_str());
-		printw("\n");
+		printw("%s", iterator->c_str());
+		if (i != rows - 1) {
+			printw("\n");
+		}
 	}
 	for (; i < rows - 1; ++i) {
-		printw("%c\n", '~');
+		printw("~\n");
 	}
 	refresh();
 }
