@@ -4,6 +4,7 @@
 #include <ncurses.h>
 #include <vector>
 #include <string>
+#include <cctype>
 
 #include "screen.h"
 #include "cursor.h"
@@ -12,6 +13,8 @@ enum class Mode {
 	NORMAL = 0,
 	INSERT
 };
+
+static const int ESCAPE_KEY = '\x1B';
 
 class Editor {
 	FILE* file;
@@ -29,6 +32,7 @@ class Editor {
 	void move_cursor_right() noexcept;
 
 	void normal_mode_action(int character) noexcept;
+	void insert_mode_action(int character) noexcept;
 	void write_char(int character) noexcept;
 	void save() noexcept;
 public:
