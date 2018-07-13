@@ -23,6 +23,12 @@ std::vector<std::string> Editor::create_file_contents() noexcept {
 }
 
 void Editor::process_keypress(int character) noexcept {
+	if (current_mode == Mode::NORMAL) {
+		normal_mode_action(character);
+	}
+}
+
+void Editor::normal_mode_action(int character) noexcept {
 	switch (character) {
 		case 'q':
 			endwin();

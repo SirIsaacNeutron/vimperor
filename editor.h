@@ -8,8 +8,14 @@
 #include "screen.h"
 #include "cursor.h"
 
+enum class Mode {
+	NORMAL = 0,
+	INSERT
+};
+
 class Editor {
 	FILE* file;
+	Mode current_mode{Mode::NORMAL};
 	std::vector<std::string> file_contents{create_file_contents()};
 	Screen screen{};
 	Cursor cursor{0, 0};
@@ -22,6 +28,7 @@ class Editor {
 	void move_cursor_left() noexcept;
 	void move_cursor_right() noexcept;
 
+	void normal_mode_action(int character) noexcept;
 	void write_char(int character) noexcept;
 	void save() noexcept;
 public:
