@@ -47,6 +47,9 @@ void Editor::process_keypress(int character) noexcept {
 			}
 			screen.move_cursor(cursor);
 			break;
+		case 's':
+			save();
+			break;
 		default:
 			if ((character >= 'a' && character <= 'z')
 				|| (character >= 'A' && character <= 'Z')
@@ -96,6 +99,14 @@ void Editor::write_char(int character) noexcept {
 	screen.move_cursor(cursor);
 	screen.display(std::begin(file_contents)
 			+ top_of_screen_index, std::end(file_contents));	
+}
+
+void Editor::save() noexcept {
+	rewind(file);
+	for (const auto& str : file_contents) {
+		fputs(str.c_str(), file);	
+		fputs("\n", file);
+	}
 }
 
 Editor::~Editor() {
