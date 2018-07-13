@@ -47,6 +47,12 @@ void Editor::process_keypress(int character) noexcept {
 			}
 			screen.move_cursor(cursor);
 			break;
+		default:
+			if ((character >= 'a' && character <= 'z')
+				|| (character >= 'A' && character <= 'Z')
+				|| character == ' ') {
+				write_char(character);
+			}
 	}
 }
 
@@ -76,6 +82,20 @@ void Editor::move_cursor_down() noexcept {
 					+ top_of_screen_index, std::end(file_contents));	
 	}
 	screen.move_cursor(cursor);
+}
+
+void Editor::write_char(int character) noexcept {	
+	if (cursor.x < file_contents[cursor.y].size()) {
+		file_contents[cursor.y][cursor.x] = character;
+		++cursor.x;
+	}
+	else {
+		file_contents[cursor.y].push_back(character);
+		++cursor.x;
+	}
+	screen.move_cursor(cursor);
+	screen.display(std::begin(file_contents)
+			+ top_of_screen_index, std::end(file_contents));	
 }
 
 Editor::~Editor() {

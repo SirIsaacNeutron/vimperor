@@ -21,6 +21,8 @@ class Editor {
 	void move_cursor_up() noexcept;
 	void move_cursor_left() noexcept;
 	void move_cursor_right() noexcept;
+
+	void write_char(int character) noexcept;
 public:
 	Editor(const char* file_name = "") noexcept;
 	Editor(const Editor& e) = delete;
