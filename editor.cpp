@@ -23,7 +23,19 @@ std::vector<std::string> Editor::create_file_contents() noexcept {
 }
 
 void Editor::process_keypress(int character) noexcept {
+	if (current_mode == Mode::NORMAL) {
+		normal_mode_action(character);
+	}
+	else if (current_mode == Mode::INSERT) {
+		insert_mode_action(character);	
+	}
+}
+
+void Editor::normal_mode_action(int character) noexcept {
 	switch (character) {
+		case 'i':
+			current_mode = Mode::INSERT;
+			break;
 		case 'q':
 			endwin();
 			exit(1);
@@ -50,12 +62,19 @@ void Editor::process_keypress(int character) noexcept {
 		case 's':
 			save();
 			break;
+	}
+}
+
+void Editor::insert_mode_action(int character) noexcept {
+	switch (character) {
+		case ESCAPE_KEY:
+			current_mode = Mode::NORMAL;
+			break;
 		default:
-			if ((character >= 'a' && character <= 'z')
-				|| (character >= 'A' && character <= 'Z')
-				|| character == ' ') {
+			if (std::isprint(character)) {
 				write_char(character);
 			}
+			break;
 	}
 }
 
