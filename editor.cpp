@@ -93,15 +93,15 @@ void Editor::move_cursor_up() noexcept {
 }
 
 void Editor::move_cursor_down() noexcept {
-	if (cursor.y != screen.rows) {
+	if (cursor.y + 1 != screen.rows) {
 		++cursor.y;	
 		++file_contents_index;
 	}
 	else if (file_contents_index < file_contents.size()) {
-			++top_of_screen_index;
-			++file_contents_index;
-			screen.display(std::begin(file_contents)
-					+ top_of_screen_index, std::end(file_contents));	
+		++top_of_screen_index;
+		++file_contents_index;
+		screen.display(std::begin(file_contents)
+				+ top_of_screen_index, std::end(file_contents));	
 	}
 	screen.move_cursor(cursor);
 }
