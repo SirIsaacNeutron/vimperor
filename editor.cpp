@@ -41,10 +41,7 @@ void Editor::normal_mode_action(int character) noexcept {
 			exit(1);
 			break;
 		case 'l':
-			if (cursor.x < screen.cols) {
-				++cursor.x;
-			}
-			screen.move_cursor(cursor);
+			move_cursor_right();
 			break;
 		case 'k':
 			move_cursor_up();
@@ -63,6 +60,13 @@ void Editor::normal_mode_action(int character) noexcept {
 			save();
 			break;
 	}
+}
+
+void Editor::move_cursor_right() noexcept {
+	if (cursor.x < screen.cols) {
+		++cursor.x;
+	}
+	screen.move_cursor(cursor);
 }
 
 void Editor::insert_mode_action(int character) noexcept {
