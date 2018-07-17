@@ -15,6 +15,7 @@ enum class Mode {
 };
 
 static const int ESCAPE_KEY = '\x1B';
+static const int SPACES_FOR_TAB = 8;
 
 class Editor {
 	FILE* file;
