@@ -107,12 +107,12 @@ void Editor::move_cursor_down() noexcept {
 }
 
 void Editor::write_char(int character) noexcept {	
-	if (cursor.x < file_contents[cursor.y].size()) {
-		file_contents[cursor.y][cursor.x] = character;
+	if (cursor.x < file_contents[file_contents_index].size()) {
+		file_contents[file_contents_index][cursor.x] = character;
 		++cursor.x;
 	}
 	else {
-		file_contents[cursor.y].push_back(character);
+		file_contents[file_contents_index].push_back(character);
 		++cursor.x;
 	}
 	screen.move_cursor(cursor);
