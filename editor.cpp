@@ -93,27 +93,34 @@ void Editor::move_cursor_up() noexcept {
 }
 
 void Editor::move_cursor_down() noexcept {
-	if (cursor.y + 1 != screen.rows) {
-		++cursor.y;	
-		++file_contents_index;
-	}
-	else if (file_contents_index < file_contents.size()) {
-		++top_of_screen_index;
-		++file_contents_index;
-		screen.display(std::begin(file_contents)
-				+ top_of_screen_index, std::end(file_contents));	
+	if (file_contents_index < file_contents.size()) {
+		if (cursor.y + 1 != screen.rows) {
+			++cursor.y;	
+			++file_contents_index;
+		}
+		else {
+			++top_of_screen_index;
+			++file_contents_index;
+			screen.display(std::begin(file_contents)
+					+ top_of_screen_index, std::end(file_contents));	
+		}
 	}
 	screen.move_cursor(cursor);
 }
 
 void Editor::write_char(int character) noexcept {	
-	if (cursor.x < file_contents[cursor.y].size()) {
-		file_contents[cursor.y][cursor.x] = character;
-		++cursor.x;
+	if (file_contents_index < file_contents.size()) {
+		if (cursor.x < file_contents[file_contents_index].size()) {
+			file_contents[file_contents_index][cursor.x] = character;
+			++cursor.x;
+		}
+		else {
+			file_contents[file_contents_index].push_back(character);
+			++cursor.x;
+		}
 	}
 	else {
-		file_contents[cursor.y].push_back(character);
-		++cursor.x;
+		file_contents.push_back("");
 	}
 	screen.move_cursor(cursor);
 	screen.display(std::begin(file_contents)
