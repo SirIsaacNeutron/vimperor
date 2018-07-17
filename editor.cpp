@@ -70,14 +70,15 @@ void Editor::move_cursor_right() noexcept {
 		else {
 			++cursor.x;
 		}
+		screen.move_cursor(cursor);
 	}
-	screen.move_cursor(cursor);
 }
 
 void Editor::move_cursor_up() noexcept {
 	if (cursor.y != 0) {
 		--cursor.y;
 		--file_contents_index;
+		screen.move_cursor(cursor);
 	}
 	else if (file_contents_index != 0) {
 		--file_contents_index; 
@@ -85,7 +86,6 @@ void Editor::move_cursor_up() noexcept {
 		screen.display(std::begin(file_contents)
 				+ top_of_screen_index, std::end(file_contents));		
 	}
-	screen.move_cursor(cursor);
 }
 
 void Editor::move_cursor_down() noexcept {
@@ -93,6 +93,7 @@ void Editor::move_cursor_down() noexcept {
 		if (cursor.y + 1 != screen.rows) {
 			++cursor.y;	
 			++file_contents_index;
+			screen.move_cursor(cursor);
 		}
 		else {
 			++top_of_screen_index;
@@ -101,14 +102,13 @@ void Editor::move_cursor_down() noexcept {
 					+ top_of_screen_index, std::end(file_contents));	
 		}
 	}
-	screen.move_cursor(cursor);
 }
 
 void Editor::move_cursor_left() noexcept {
 	if (cursor.x > 0) {
 		--cursor.x;
+		screen.move_cursor(cursor);
 	}
-	screen.move_cursor(cursor);
 }
 
 void Editor::insert_mode_action(int character) noexcept {
@@ -129,18 +129,23 @@ void Editor::write_char(int character) noexcept {
 		if (cursor.x < file_contents[file_contents_index].size()) {
 			file_contents[file_contents_index][cursor.x] = character;
 			++cursor.x;
+
+			screen.move_cursor(cursor);
+			screen.display(std::begin(file_contents)
+				+ top_of_screen_index, std::end(file_contents));
 		}
 		else {
 			file_contents[file_contents_index].push_back(character);
 			++cursor.x;
+
+			screen.move_cursor(cursor);
+			screen.display(std::begin(file_contents)
+				+ top_of_screen_index, std::end(file_contents));
 		}
 	}
 	else {
 		file_contents.push_back("");
 	}
-	screen.move_cursor(cursor);
-	screen.display(std::begin(file_contents)
-			+ top_of_screen_index, std::end(file_contents));	
 }
 
 void Editor::save() noexcept {
