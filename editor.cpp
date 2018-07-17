@@ -51,10 +51,7 @@ void Editor::normal_mode_action(int character) noexcept {
 			break;
 		
 		case 'h':
-			if (cursor.x > 0) {
-				--cursor.x;
-			}
-			screen.move_cursor(cursor);
+			move_cursor_left();
 			break;
 		case 's':
 			save();
@@ -95,6 +92,13 @@ void Editor::move_cursor_down() noexcept {
 			screen.display(std::begin(file_contents)
 					+ top_of_screen_index, std::end(file_contents));	
 		}
+	}
+	screen.move_cursor(cursor);
+}
+
+void Editor::move_cursor_left() noexcept {
+	if (cursor.x > 0) {
+		--cursor.x;
 	}
 	screen.move_cursor(cursor);
 }
