@@ -69,19 +69,6 @@ void Editor::move_cursor_right() noexcept {
 	screen.move_cursor(cursor);
 }
 
-void Editor::insert_mode_action(int character) noexcept {
-	switch (character) {
-		case ESCAPE_KEY:
-			current_mode = Mode::NORMAL;
-			break;
-		default:
-			if (std::isprint(character)) {
-				write_char(character);
-			}
-			break;
-	}
-}
-
 void Editor::move_cursor_up() noexcept {
 	if (cursor.y != 0) {
 		--cursor.y;
@@ -110,6 +97,19 @@ void Editor::move_cursor_down() noexcept {
 		}
 	}
 	screen.move_cursor(cursor);
+}
+
+void Editor::insert_mode_action(int character) noexcept {
+	switch (character) {
+		case ESCAPE_KEY:
+			current_mode = Mode::NORMAL;
+			break;
+		default:
+			if (std::isprint(character)) {
+				write_char(character);
+			}
+			break;
+	}
 }
 
 void Editor::write_char(int character) noexcept {	
