@@ -61,7 +61,7 @@ void Editor::normal_mode_action(int character) noexcept {
 
 void Editor::move_cursor_right() noexcept {
 	if (file_contents_index < file_contents.size()
-			&& cursor.x < file_contents[file_contents_index].size() - 1) {
+			&& cursor.x < file_contents[file_contents_index].size()) {
 		if (file_contents[file_contents_index][cursor.x] == '\t') {
 			for (int i = 0; i < SPACES_FOR_TAB; ++i) {
 				++cursor.x;	
