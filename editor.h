@@ -15,6 +15,7 @@ enum class Mode {
 };
 
 static const int ESCAPE_KEY = '\x1B';
+static const int BACKSPACE_KEY = '\x7F';
 static const int SPACES_FOR_TAB = 8;
 
 class Editor {
@@ -34,7 +35,9 @@ class Editor {
 
 	void normal_mode_action(int character) noexcept;
 	void insert_mode_action(int character) noexcept;
+
 	void write_char(int character) noexcept;
+	void delete_char() noexcept;
 	void save() noexcept;
 public:
 	Editor(const char* file_name = "") noexcept;

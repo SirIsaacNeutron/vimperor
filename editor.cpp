@@ -116,12 +116,36 @@ void Editor::insert_mode_action(int character) noexcept {
 		case ESCAPE_KEY:
 			current_mode = Mode::NORMAL;
 			break;
+		case BACKSPACE_KEY:
+			delete_char();
+			break;
 		default:
 			if (std::isprint(character)) {
 				write_char(character);
 			}
 			break;
 	}
+}
+
+void Editor::delete_char() noexcept {
+	// If we're not past the end of the file
+	if (file_contents_index < file_contents.size()) {
+		file_contents[file_contents_index].replace(cursor.x, 1, "");
+
+		// If a line is empty and we just pressed the delete key at the left-
+		// most edge of the screen
+		if (cursor.x == 0 
+				&& file_contents[file_contents_index].size() == 0) {
+			// Then delete the whole line	
+			file_contents.erase(std::begin(file_contents) + file_contents_index);
+		}
+		else {
+			move_cursor_left();	
+		}
+	}
+
+	screen.display(std::begin(file_contents) + top_of_screen_index,
+			std::end(file_contents));
 }
 
 void Editor::write_char(int character) noexcept {	
