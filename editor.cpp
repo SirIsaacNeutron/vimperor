@@ -116,12 +116,22 @@ void Editor::insert_mode_action(int character) noexcept {
 		case ESCAPE_KEY:
 			current_mode = Mode::NORMAL;
 			break;
+		case BACKSPACE_KEY:
+			delete_char();
+			break;
 		default:
 			if (std::isprint(character)) {
 				write_char(character);
 			}
 			break;
 	}
+}
+
+void Editor::delete_char() noexcept {
+	file_contents[file_contents_index].replace(cursor.x, 1, "");
+	move_cursor_left();	
+	screen.display(std::begin(file_contents) + top_of_screen_index,
+			std::end(file_contents));
 }
 
 void Editor::write_char(int character) noexcept {	
