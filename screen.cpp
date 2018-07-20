@@ -36,8 +36,19 @@ void Screen::display(std::vector<std::string>::iterator begin,
 		}
 	}
 	refresh();
+	draw_file_info_bar();
+}
+
+void Screen::draw_file_info_bar() const noexcept {
 	box(file_info_bar, '|', '-');
-	mvwprintw(file_info_bar, 1, 1, "%s", file_name.c_str());
+	if (is_file_modified) {
+		mvwprintw(file_info_bar, 1, 1, "%s", file_name.c_str());
+		wprintw(file_info_bar, " [+]");
+	}
+	else {
+		mvwprintw(file_info_bar, 1, 1, "%s", file_name.c_str());
+		wprintw(file_info_bar, "    ");
+	}
 	wrefresh(file_info_bar);
 }
 

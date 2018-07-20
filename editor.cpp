@@ -146,6 +146,7 @@ void Editor::delete_char() noexcept {
 			// Then delete the whole line	
 			file_contents.erase(std::begin(file_contents) + file_contents_index);
 		}
+		screen.is_file_modified = true;
 	}
 	screen.display(std::begin(file_contents) + top_of_screen_index,
 			std::end(file_contents));
@@ -175,6 +176,7 @@ void Editor::write_char(int character) noexcept {
 		// Append a new, empty line
 		file_contents.push_back("");
 	}
+	screen.is_file_modified = true;
 }
 
 void Editor::save() noexcept {
@@ -183,6 +185,9 @@ void Editor::save() noexcept {
 		fputs(str.c_str(), file);	
 		fputs("\n", file);
 	}
+	screen.is_file_modified = false;
+	screen.display(std::begin(file_contents) + top_of_screen_index,
+			std::end(file_contents));
 }
 
 Editor::~Editor() {

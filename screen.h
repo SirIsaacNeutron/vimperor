@@ -10,11 +10,13 @@
 // All the functionality related to displaying things on the screen.
 // If something Vimperor needs to do involves an ncurses function call,
 // it should be done by the Screen struct.
-struct Screen {
+class Screen {
+public:
 	std::size_t rows;
 	std::size_t cols;
 	std::string file_name;
 	WINDOW* file_info_bar;
+	bool is_file_modified{false};
 
 	Screen(const char* file_name) noexcept;
 	Screen(const Screen& s) = delete;
@@ -28,5 +30,7 @@ struct Screen {
 	void move_cursor(const Cursor& cursor) const noexcept;
 
 	~Screen();
+private:
+	void draw_file_info_bar() const noexcept;
 };
 #endif
