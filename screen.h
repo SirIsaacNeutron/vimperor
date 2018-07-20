@@ -7,6 +7,9 @@
 
 #include "cursor.h"
 
+// All the functionality related to displaying things on the screen.
+// If something Vimperor needs to do involves an ncurses function call,
+// it should be done by the Screen struct.
 struct Screen {
 	std::size_t rows;
 	std::size_t cols;

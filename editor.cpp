@@ -91,6 +91,11 @@ void Editor::move_cursor_up() noexcept {
 
 void Editor::move_cursor_down() noexcept {
 	if (file_contents_index < file_contents.size()) {
+		// We check for cursor.y + 1 here rather than just cursor.y.
+		// This is because cursor.y + 1 == screen.rows when we've
+		// moved the cursor down when it was at the bottom of the screen.
+		// (It's not possible to see the cursor at row screen.rows, 
+		// because screen.rows is offscreen.)
 		if (cursor.y + 1 != screen.rows) {
 			++cursor.y;	
 			++file_contents_index;
@@ -156,6 +161,7 @@ void Editor::write_char(int character) noexcept {
 				+ top_of_screen_index, std::end(file_contents));
 			move_cursor_right();
 		}
+		// If we're at the end of the current line
 		else {
 			file_contents[file_contents_index].push_back(character);
 
@@ -164,7 +170,9 @@ void Editor::write_char(int character) noexcept {
 			move_cursor_right();
 		}
 	}
+	// If we're beyond the end of the file
 	else {
+		// Append a new, empty line
 		file_contents.push_back("");
 	}
 }

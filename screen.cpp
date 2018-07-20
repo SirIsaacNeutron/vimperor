@@ -17,6 +17,8 @@ void Screen::display(std::vector<std::string>::iterator begin,
 	// on the screen would still partially show up on the screen
 	clear();
 	std::size_t i = 0;
+	// We need to check if i == rows - 1 because if we don't, the screen
+	// will omit lines.
 	for (auto iterator = begin; i < rows && iterator != end; 
 	++iterator, ++i) {
 		printw("%s", iterator->c_str());

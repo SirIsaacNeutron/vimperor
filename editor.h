@@ -18,6 +18,7 @@ static const int ESCAPE_KEY = '\x1B';
 static const int BACKSPACE_KEY = '\x7F';
 static const int SPACES_FOR_TAB = 8;
 
+// The core functionality of Vimperor.
 class Editor {
 	FILE* file;
 	Mode current_mode{Mode::NORMAL};
