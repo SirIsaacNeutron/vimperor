@@ -13,6 +13,7 @@
 struct Screen {
 	std::size_t rows;
 	std::size_t cols;
+	WINDOW* file_info_bar;
 
 	Screen() noexcept;
 	Screen(const Screen& s) = delete;
