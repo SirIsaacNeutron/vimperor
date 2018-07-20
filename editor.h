@@ -21,9 +21,9 @@ static const int SPACES_FOR_TAB = 8;
 // The core functionality of Vimperor.
 class Editor {
 	FILE* file;
+	Screen screen;
 	Mode current_mode{Mode::NORMAL};
 	std::vector<std::string> file_contents{create_file_contents()};
-	Screen screen{};
 	Cursor cursor{0, 0};
 	std::size_t file_contents_index = 0;
 	std::size_t top_of_screen_index = 0;

@@ -1,9 +1,10 @@
 #include "editor.h"
 
 Editor::Editor(const char* file_name) noexcept
-: file{fopen(file_name, "r+")} {
-	screen.show_first_display(std::begin(file_contents), 
-			std::end(file_contents));
+: file{fopen(file_name, "r+")}, screen{file_name} {
+	screen.display(std::begin(file_contents), 
+			std::end(file_contents),
+			cursor);
 }
 
 std::vector<std::string> Editor::create_file_contents() noexcept {
@@ -84,8 +85,8 @@ void Editor::move_cursor_up() noexcept {
 		--file_contents_index; 
 		--top_of_screen_index;
 		screen.display(std::begin(file_contents)
-				+ top_of_screen_index, std::end(file_contents));		
-		screen.move_cursor(cursor);
+				+ top_of_screen_index, std::end(file_contents),
+				cursor);		
 	}
 }
 
@@ -105,8 +106,8 @@ void Editor::move_cursor_down() noexcept {
 			++top_of_screen_index;
 			++file_contents_index;
 			screen.display(std::begin(file_contents)
-					+ top_of_screen_index, std::end(file_contents));	
-			screen.move_cursor(cursor);
+					+ top_of_screen_index, std::end(file_contents),
+					cursor);	
 		}
 	}
 }
@@ -146,10 +147,12 @@ void Editor::delete_char() noexcept {
 			// Then delete the whole line	
 			file_contents.erase(std::begin(file_contents) + file_contents_index);
 		}
+		screen.is_file_modified = true;
 	}
-	screen.display(std::begin(file_contents) + top_of_screen_index,
-			std::end(file_contents));
 	move_cursor_left();
+	screen.display(std::begin(file_contents) + top_of_screen_index,
+			std::end(file_contents),
+			cursor);
 }
 
 void Editor::write_char(int character) noexcept {	
@@ -158,7 +161,8 @@ void Editor::write_char(int character) noexcept {
 			file_contents[file_contents_index][cursor.x] = character;
 
 			screen.display(std::begin(file_contents)
-				+ top_of_screen_index, std::end(file_contents));
+				+ top_of_screen_index, std::end(file_contents),
+				cursor);
 			move_cursor_right();
 		}
 		// If we're at the end of the current line
@@ -166,7 +170,8 @@ void Editor::write_char(int character) noexcept {
 			file_contents[file_contents_index].push_back(character);
 
 			screen.display(std::begin(file_contents)
-				+ top_of_screen_index, std::end(file_contents));
+				+ top_of_screen_index, std::end(file_contents),
+				cursor);
 			move_cursor_right();
 		}
 	}
@@ -175,6 +180,7 @@ void Editor::write_char(int character) noexcept {
 		// Append a new, empty line
 		file_contents.push_back("");
 	}
+	screen.is_file_modified = true;
 }
 
 void Editor::save() noexcept {
@@ -183,6 +189,10 @@ void Editor::save() noexcept {
 		fputs(str.c_str(), file);	
 		fputs("\n", file);
 	}
+	screen.is_file_modified = false;
+	screen.display(std::begin(file_contents) + top_of_screen_index,
+			std::end(file_contents),
+			cursor);
 }
 
 Editor::~Editor() {
