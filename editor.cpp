@@ -1,7 +1,7 @@
 #include "editor.h"
 
 Editor::Editor(const char* file_name) noexcept
-: file{fopen(file_name, "r+")} {
+: file{fopen(file_name, "r+")}, screen{file_name} {
 	screen.show_first_display(std::begin(file_contents), 
 			std::end(file_contents));
 }

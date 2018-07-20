@@ -13,9 +13,10 @@
 struct Screen {
 	std::size_t rows;
 	std::size_t cols;
+	std::string file_name;
 	WINDOW* file_info_bar;
 
-	Screen() noexcept;
+	Screen(const char* file_name) noexcept;
 	Screen(const Screen& s) = delete;
 	Screen& operator=(const Screen& s) = delete;
 

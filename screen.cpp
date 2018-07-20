@@ -1,16 +1,15 @@
 #include "screen.h"
 
-Screen::Screen() noexcept 
-: rows{}, cols{}, file_info_bar{} {
+Screen::Screen(const char* file_name) noexcept 
+: rows{}, cols{}, file_name{file_name}, file_info_bar{} {
 	initscr();
 	noecho();
 	raw();
 	getmaxyx(stdscr, rows, cols);
 	scrollok(stdscr, true);
 
-	rows -= 3;
-	file_info_bar = newwin(2, cols, rows, 0);
-	box(file_info_bar, '|', '-');
+	rows -= 4;
+	file_info_bar = newwin(3, cols, rows, 0);
 }
 
 void Screen::display(std::vector<std::string>::iterator begin,
@@ -38,6 +37,7 @@ void Screen::display(std::vector<std::string>::iterator begin,
 	}
 	refresh();
 	box(file_info_bar, '|', '-');
+	mvwprintw(file_info_bar, 1, 1, "%s", file_name.c_str());
 	wrefresh(file_info_bar);
 }
 
