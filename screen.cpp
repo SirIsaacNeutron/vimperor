@@ -8,6 +8,9 @@ Screen::Screen(const char* file_name) noexcept
 	getmaxyx(stdscr, rows, cols);
 	scrollok(stdscr, true);
 
+	// We can simply change rows here to make space for more windows.
+	// It's the most convenient way I know of to make space for windows
+	// without having to change code in Screen::display() or in editor.cpp
 	rows -= 4;
 	file_info_bar = newwin(3, cols, rows, 0);
 }
@@ -49,7 +52,7 @@ void Screen::draw_file_info_bar() const noexcept {
 	}
 	else {
 		mvwprintw(file_info_bar, 1, 1, "%s", file_name.c_str());
-		wprintw(file_info_bar, "    ");
+		wprintw(file_info_bar, "    "); // Clear out the "modified" sign
 	}
 	wrefresh(file_info_bar);
 }
