@@ -11,6 +11,11 @@ Screen::Screen() noexcept
 
 void Screen::display(std::vector<std::string>::iterator begin,
 		std::vector<std::string>::iterator end) const noexcept {
+	// We need to clear the screen before displaying it to make sure
+	// that scrolling works correctly. If we didn't call clear() here,
+	// lines that are bigger than the lines that are about to be displayed
+	// on the screen would still partially show up on the screen
+	clear();
 	std::size_t i = 0;
 	for (auto iterator = begin; i < rows && iterator != end; 
 	++iterator, ++i) {

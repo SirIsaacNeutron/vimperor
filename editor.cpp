@@ -85,6 +85,7 @@ void Editor::move_cursor_up() noexcept {
 		--top_of_screen_index;
 		screen.display(std::begin(file_contents)
 				+ top_of_screen_index, std::end(file_contents));		
+		screen.move_cursor(cursor);
 	}
 }
 
@@ -100,6 +101,7 @@ void Editor::move_cursor_down() noexcept {
 			++file_contents_index;
 			screen.display(std::begin(file_contents)
 					+ top_of_screen_index, std::end(file_contents));	
+			screen.move_cursor(cursor);
 		}
 	}
 }
@@ -139,32 +141,27 @@ void Editor::delete_char() noexcept {
 			// Then delete the whole line	
 			file_contents.erase(std::begin(file_contents) + file_contents_index);
 		}
-		else {
-			move_cursor_left();	
-		}
 	}
-
 	screen.display(std::begin(file_contents) + top_of_screen_index,
 			std::end(file_contents));
+	move_cursor_left();
 }
 
 void Editor::write_char(int character) noexcept {	
 	if (file_contents_index < file_contents.size()) {
 		if (cursor.x < file_contents[file_contents_index].size()) {
 			file_contents[file_contents_index][cursor.x] = character;
-			move_cursor_right();
 
-			screen.move_cursor(cursor);
 			screen.display(std::begin(file_contents)
 				+ top_of_screen_index, std::end(file_contents));
+			move_cursor_right();
 		}
 		else {
 			file_contents[file_contents_index].push_back(character);
-			move_cursor_right();
 
-			screen.move_cursor(cursor);
 			screen.display(std::begin(file_contents)
 				+ top_of_screen_index, std::end(file_contents));
+			move_cursor_right();
 		}
 	}
 	else {
