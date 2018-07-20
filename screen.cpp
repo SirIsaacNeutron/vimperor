@@ -13,7 +13,8 @@ Screen::Screen(const char* file_name) noexcept
 }
 
 void Screen::display(std::vector<std::string>::iterator begin,
-		std::vector<std::string>::iterator end) const noexcept {
+		std::vector<std::string>::iterator end,
+		const Cursor& cursor) const noexcept {
 	// We need to clear the screen before displaying it to make sure
 	// that scrolling works correctly. If we didn't call clear() here,
 	// lines that are bigger than the lines that are about to be displayed
@@ -37,6 +38,7 @@ void Screen::display(std::vector<std::string>::iterator begin,
 	}
 	refresh();
 	draw_file_info_bar();
+	move_cursor(cursor);
 }
 
 void Screen::draw_file_info_bar() const noexcept {
@@ -50,12 +52,6 @@ void Screen::draw_file_info_bar() const noexcept {
 		wprintw(file_info_bar, "    ");
 	}
 	wrefresh(file_info_bar);
-}
-
-void Screen::show_first_display(std::vector<std::string>::iterator
-		begin, std::vector<std::string>::iterator end) const noexcept {
-	display(begin, end);
-	move(0, 0); // Move cursor to the top-left corner
 }
 
 void Screen::move_cursor(const Cursor& cursor) const noexcept {
