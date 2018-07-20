@@ -85,6 +85,7 @@ void Editor::move_cursor_up() noexcept {
 		--top_of_screen_index;
 		screen.display(std::begin(file_contents)
 				+ top_of_screen_index, std::end(file_contents));		
+		screen.move_cursor(cursor);
 	}
 }
 
@@ -100,6 +101,7 @@ void Editor::move_cursor_down() noexcept {
 			++file_contents_index;
 			screen.display(std::begin(file_contents)
 					+ top_of_screen_index, std::end(file_contents));	
+			screen.move_cursor(cursor);
 		}
 	}
 }
