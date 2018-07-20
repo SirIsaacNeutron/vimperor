@@ -15,8 +15,8 @@ Screen::Screen(const char* file_name) noexcept
 	file_info_bar = newwin(3, cols, rows, 0);
 }
 
-void Screen::display(std::vector<std::string>::iterator begin,
-		std::vector<std::string>::iterator end,
+void Screen::display(std::vector<std::string>::const_iterator begin,
+		std::vector<std::string>::const_iterator end,
 		const Cursor& cursor) const noexcept {
 	// We need to clear the screen before displaying it to make sure
 	// that scrolling works correctly. If we didn't call clear() here,

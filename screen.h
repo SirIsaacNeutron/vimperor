@@ -22,8 +22,8 @@ public:
 	Screen(const Screen& s) = delete;
 	Screen& operator=(const Screen& s) = delete;
 
-	void display(std::vector<std::string>::iterator begin,
-			std::vector<std::string>::iterator end,
+	void display(std::vector<std::string>::const_iterator begin,
+			std::vector<std::string>::const_iterator end,
 			const Cursor& cursor) const noexcept;
 
 	void move_cursor(const Cursor& cursor) const noexcept;
