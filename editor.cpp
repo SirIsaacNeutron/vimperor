@@ -138,8 +138,6 @@ void Editor::insert_mode_action(int character) noexcept {
 void Editor::delete_char() noexcept {
 	// If we're not past the end of the file
 	if (file_contents_index < file_contents.size()) {
-		file_contents[file_contents_index].replace(cursor.x, 1, "");
-
 		// If a line is empty and we just pressed the delete key at the left-
 		// most edge of the screen
 		if (cursor.x == 0 
@@ -147,6 +145,10 @@ void Editor::delete_char() noexcept {
 			// Then delete the whole line	
 			file_contents.erase(std::begin(file_contents) + file_contents_index);
 		}
+		else {
+			file_contents[file_contents_index].replace(cursor.x, 1, "");
+		}
+
 		screen.is_file_modified = true;
 	}
 	move_cursor_left();
