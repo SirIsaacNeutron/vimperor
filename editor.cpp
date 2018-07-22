@@ -148,11 +148,6 @@ void Editor::delete_char() noexcept {
 		else {
 			file_contents[file_contents_index].replace(cursor.x, 1, "");
 		}
-<<<<<<< HEAD
-	
-=======
-
->>>>>>> 70978b0161edef4a6ef5df4209aefdd72d016a7d
 		screen.is_file_modified = true;
 	}
 	move_cursor_left();
