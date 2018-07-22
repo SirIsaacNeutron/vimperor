@@ -1,8 +1,15 @@
 #include "screen.h"
 
+// Legal color pair values are in the range 1 to COLOR_PAIRS - 1, inclusive.
+// That is why the color here starts at 1 and not 0.
+static const int FILE_BAR_COLOR = 1;
+
 Screen::Screen(const char* file_name) noexcept 
 : rows{}, cols{}, file_name{file_name}, file_info_bar{} {
 	initscr();
+	start_color();
+	init_pair(FILE_BAR_COLOR, COLOR_BLACK, COLOR_WHITE);
+
 	noecho();
 	raw();
 	getmaxyx(stdscr, rows, cols);
@@ -11,8 +18,8 @@ Screen::Screen(const char* file_name) noexcept
 	// We can simply change rows here to make space for more windows.
 	// It's the most convenient way I know of to make space for windows
 	// without having to change code in Screen::display() or in editor.cpp
-	rows -= 4;
-	file_info_bar = newwin(3, cols, rows, 0);
+	rows -= 2;
+	file_info_bar = newwin(1, cols, rows, 0);
 }
 
 void Screen::display(std::vector<std::string>::const_iterator begin,
@@ -45,13 +52,13 @@ void Screen::display(std::vector<std::string>::const_iterator begin,
 }
 
 void Screen::draw_file_info_bar() const noexcept {
-	box(file_info_bar, '|', '-');
+	wbkgd(file_info_bar, COLOR_PAIR(FILE_BAR_COLOR));
 	if (is_file_modified) {
-		mvwprintw(file_info_bar, 1, 1, "%s", file_name.c_str());
+		mvwprintw(file_info_bar, 0, 0, "%s", file_name.c_str());
 		wprintw(file_info_bar, " [+]");
 	}
 	else {
-		mvwprintw(file_info_bar, 1, 1, "%s", file_name.c_str());
+		mvwprintw(file_info_bar, 0, 0, "%s", file_name.c_str());
 		wprintw(file_info_bar, "    "); // Clear out the "modified" sign
 	}
 	wrefresh(file_info_bar);
