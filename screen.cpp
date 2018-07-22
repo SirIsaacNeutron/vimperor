@@ -53,13 +53,12 @@ void Screen::display(std::vector<std::string>::const_iterator begin,
 
 void Screen::draw_file_info_bar() const noexcept {
 	wbkgd(file_info_bar, COLOR_PAIR(FILE_BAR_COLOR));
+	wclear(file_info_bar);
 	if (is_file_modified) {
-		mvwprintw(file_info_bar, 0, 0, "%s", file_name.c_str());
-		wprintw(file_info_bar, " [+]");
+		mvwprintw(file_info_bar, 0, 0, "%s [+]", file_name.c_str());
 	}
 	else {
 		mvwprintw(file_info_bar, 0, 0, "%s", file_name.c_str());
-		wprintw(file_info_bar, "    "); // Clear out the "modified" sign
 	}
 	wrefresh(file_info_bar);
 }
