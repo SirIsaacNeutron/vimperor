@@ -173,13 +173,16 @@ void Editor::add_new_line() noexcept {
 				rest_of_line);
 
 		move_cursor_down();
-		screen.display(std::begin(file_contents) + top_of_screen_index,
-				std::end(file_contents),
-				cursor);
+		cursor.x = 0;
 	}
 	else {
 		file_contents.push_back("");
 	}
+
+	screen.is_file_modified = true;
+	screen.display(std::begin(file_contents) + top_of_screen_index,
+			std::end(file_contents),
+			cursor);
 }
 
 void Editor::write_char(int character) noexcept {	
