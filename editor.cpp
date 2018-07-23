@@ -127,6 +127,9 @@ void Editor::insert_mode_action(int character) noexcept {
 		case BACKSPACE_KEY:
 			delete_char();
 			break;
+		case ENTER_KEY:
+			add_new_line();
+			break;
 		default:
 			if (std::isprint(character)) {
 				write_char(character);
@@ -154,6 +157,29 @@ void Editor::delete_char() noexcept {
 	screen.display(std::begin(file_contents) + top_of_screen_index,
 			std::end(file_contents),
 			cursor);
+}
+
+void Editor::add_new_line() noexcept {
+	if (file_contents_index < file_contents.size()) {
+		std::string rest_of_line{ 
+			std::begin(file_contents[file_contents_index]) + cursor.x,
+			std::end(file_contents[file_contents_index])};
+
+		file_contents[file_contents_index].erase(
+			cursor.x, file_contents[file_contents_index].size());
+
+		file_contents.insert(
+				std::begin(file_contents) + file_contents_index + 1,
+				rest_of_line);
+
+		move_cursor_down();
+		screen.display(std::begin(file_contents) + top_of_screen_index,
+				std::end(file_contents),
+				cursor);
+	}
+	else {
+		file_contents.push_back("");
+	}
 }
 
 void Editor::write_char(int character) noexcept {	
