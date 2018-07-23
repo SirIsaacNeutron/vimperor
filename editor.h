@@ -17,6 +17,7 @@ enum class Mode {
 static const int ESCAPE_KEY = '\x1B';
 static const int BACKSPACE_KEY = '\x7F';
 static const int SPACES_FOR_TAB = 8;
+static const int ENTER_KEY = '\xA';
 
 // The core functionality of Vimperor.
 class Editor {
@@ -40,6 +41,7 @@ class Editor {
 	void write_char(int character) noexcept;
 	void delete_char() noexcept;
 	void save() noexcept;
+	void add_new_line() noexcept;
 public:
 	Editor(const char* file_name = "") noexcept;
 	Editor(const Editor& e) = delete;
