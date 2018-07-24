@@ -79,6 +79,13 @@ void Editor::move_cursor_right() noexcept {
 }
 
 void Editor::move_cursor_up() noexcept {
+	if (file_contents_index != 0) {
+		const auto& line_above = file_contents[file_contents_index - 1];
+		const auto& current_line = file_contents[file_contents_index];
+
+		move_cursor_x_considering_lines(line_above, current_line);
+	}
+
 	if (cursor.y != 0) {
 		--cursor.y;
 		--file_contents_index;
@@ -90,8 +97,26 @@ void Editor::move_cursor_up() noexcept {
 	}
 }
 
+void Editor::move_cursor_x_considering_lines(
+const std::string& line_considered, const std::string& current_line) noexcept {
+	if (line_considered.size() < current_line.size()) {
+		if (line_considered.size() == 0) {
+			cursor.x = 0;
+		}
+		else if (cursor.x > line_considered.size()) {
+			cursor.x = line_considered.size() - 1;
+		}
+	}
+}
+
 void Editor::move_cursor_down() noexcept {
 	if (file_contents_index < file_contents.size()) {
+		if (file_contents_index + 1 < file_contents.size()) {
+			const auto& current_line = file_contents[file_contents_index];
+			const auto& line_below = file_contents[file_contents_index + 1];
+			move_cursor_x_considering_lines(line_below, current_line);
+
+		}
 		// We check for cursor.y + 1 here rather than just cursor.y.
 		// This is because cursor.y + 1 == screen.rows when we've
 		// moved the cursor down when it was at the bottom of the screen.
