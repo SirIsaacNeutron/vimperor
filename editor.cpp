@@ -30,6 +30,9 @@ void Editor::process_keypress(int character) noexcept {
 	else if (current_mode == Mode::INSERT) {
 		insert_mode_action(character);	
 	}
+	screen.display(std::begin(file_contents) + top_of_screen_index,
+			std::end(file_contents),
+			cursor);
 }
 
 void Editor::normal_mode_action(int character) noexcept {
@@ -84,9 +87,6 @@ void Editor::move_cursor_up() noexcept {
 	else if (file_contents_index != 0) {
 		--file_contents_index; 
 		--top_of_screen_index;
-		screen.display(std::begin(file_contents)
-				+ top_of_screen_index, std::end(file_contents),
-				cursor);		
 	}
 }
 
@@ -105,9 +105,6 @@ void Editor::move_cursor_down() noexcept {
 		else {
 			++top_of_screen_index;
 			++file_contents_index;
-			screen.display(std::begin(file_contents)
-					+ top_of_screen_index, std::end(file_contents),
-					cursor);	
 		}
 	}
 }
@@ -154,9 +151,6 @@ void Editor::delete_char() noexcept {
 		screen.is_file_modified = true;
 	}
 	move_cursor_left();
-	screen.display(std::begin(file_contents) + top_of_screen_index,
-			std::end(file_contents),
-			cursor);
 }
 
 void Editor::add_new_line() noexcept {
@@ -180,9 +174,6 @@ void Editor::add_new_line() noexcept {
 	}
 
 	screen.is_file_modified = true;
-	screen.display(std::begin(file_contents) + top_of_screen_index,
-			std::end(file_contents),
-			cursor);
 }
 
 void Editor::write_char(int character) noexcept {	
@@ -190,18 +181,12 @@ void Editor::write_char(int character) noexcept {
 		if (cursor.x < file_contents[file_contents_index].size()) {
 			file_contents[file_contents_index][cursor.x] = character;
 
-			screen.display(std::begin(file_contents)
-				+ top_of_screen_index, std::end(file_contents),
-				cursor);
 			move_cursor_right();
 		}
 		// If we're at the end of the current line
 		else {
 			file_contents[file_contents_index].push_back(character);
 
-			screen.display(std::begin(file_contents)
-				+ top_of_screen_index, std::end(file_contents),
-				cursor);
 			move_cursor_right();
 		}
 	}
@@ -220,9 +205,6 @@ void Editor::save() noexcept {
 		fputs("\n", file);
 	}
 	screen.is_file_modified = false;
-	screen.display(std::begin(file_contents) + top_of_screen_index,
-			std::end(file_contents),
-			cursor);
 }
 
 Editor::~Editor() {
