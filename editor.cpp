@@ -79,6 +79,21 @@ void Editor::move_cursor_right() noexcept {
 }
 
 void Editor::move_cursor_up() noexcept {
+	// Logic for whether the cursor should be moved horizontally.
+	if (file_contents_index != 0) {
+		const auto& line_above = file_contents[file_contents_index - 1];
+		const auto& current_line = file_contents[file_contents_index];
+
+		if (line_above.size() < current_line.size()) {
+			if (line_above.size() == 0) {
+				cursor.x = 0;
+			}
+			else if (cursor.x > line_above.size()) {
+				cursor.x = line_above.size() - 1;
+			}
+		}
+	}
+
 	if (cursor.y != 0) {
 		--cursor.y;
 		--file_contents_index;
