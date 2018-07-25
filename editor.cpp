@@ -64,9 +64,10 @@ void Editor::normal_mode_action(int character) noexcept {
 }
 
 void Editor::move_cursor_right() noexcept {
+	const auto& current_line = file_contents[file_contents_index];
 	if (file_contents_index < file_contents.size()
-			&& cursor.x < file_contents[file_contents_index].size()) {
-		if (file_contents[file_contents_index][cursor.x] == '\t') {
+			&& cursor.x < current_line.size()) {
+		if (current_line[cursor.x] == '\t') {
 			for (int i = 0; i < SPACES_FOR_TAB; ++i) {
 				++cursor.x;	
 			}
@@ -165,13 +166,14 @@ void Editor::delete_char() noexcept {
 	if (file_contents_index < file_contents.size()) {
 		// If a line is empty and we just pressed the delete key at the left-
 		// most edge of the screen
+		auto& current_line = file_contents[file_contents_index];
 		if (cursor.x == 0 
-				&& file_contents[file_contents_index].size() == 0) {
+				&& current_line.size() == 0) {
 			// Then delete the whole line	
 			file_contents.erase(std::begin(file_contents) + file_contents_index);
 		}
 		else {
-			file_contents[file_contents_index].replace(cursor.x, 1, "");
+			current_line.replace(cursor.x, 1, "");
 		}
 		screen.is_file_modified = true;
 	}
@@ -180,12 +182,12 @@ void Editor::delete_char() noexcept {
 
 void Editor::add_new_line() noexcept {
 	if (file_contents_index < file_contents.size()) {
-		std::string rest_of_line{ 
-			std::begin(file_contents[file_contents_index]) + cursor.x,
-			std::end(file_contents[file_contents_index])};
+		auto& current_line = file_contents[file_contents_index];
 
-		file_contents[file_contents_index].erase(
-			cursor.x, file_contents[file_contents_index].size());
+		std::string rest_of_line{std::begin(current_line) + cursor.x,
+			std::end(current_line)};
+
+		current_line.erase(cursor.x, current_line.size());
 
 		file_contents.insert(
 				std::begin(file_contents) + file_contents_index + 1,
@@ -203,14 +205,15 @@ void Editor::add_new_line() noexcept {
 
 void Editor::write_char(int character) noexcept {	
 	if (file_contents_index < file_contents.size()) {
+		auto& current_line = file_contents[file_contents_index];
 		if (cursor.x < file_contents[file_contents_index].size()) {
-			file_contents[file_contents_index][cursor.x] = character;
+			current_line[cursor.x] = character;
 
 			move_cursor_right();
 		}
 		// If we're at the end of the current line
 		else {
-			file_contents[file_contents_index].push_back(character);
+			current_line.push_back(character);
 
 			move_cursor_right();
 		}
