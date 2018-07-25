@@ -53,9 +53,11 @@ void Editor::normal_mode_action(int character) noexcept {
 		case 'j':
 			move_cursor_down();
 			break;
-		
 		case 'h':
 			move_cursor_left();
+			break;
+		case 'x':
+			file_contents[file_contents_index].replace(cursor.x, 1, "");
 			break;
 		case 's':
 			save();
