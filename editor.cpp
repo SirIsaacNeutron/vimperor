@@ -59,6 +59,9 @@ void Editor::normal_mode_action(int character) noexcept {
 		case 'x':
 			file_contents[file_contents_index].replace(cursor.x, 1, "");
 			break;
+		case 'w':
+			do_w_motion();
+			break;
 		case 's':
 			save();
 			break;
@@ -141,6 +144,15 @@ void Editor::move_cursor_left() noexcept {
 	if (cursor.x > 0) {
 		--cursor.x;
 		screen.move_cursor(cursor);
+	}
+}
+
+void Editor::do_w_motion() noexcept {
+	std::size_t next_space_index = file_contents[file_contents_index]
+		.find_first_of(" ", cursor.x);
+
+	if (next_space_index != std::string::npos) {
+		cursor.x = next_space_index + 1;	
 	}
 }
 

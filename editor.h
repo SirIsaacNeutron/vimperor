@@ -42,6 +42,8 @@ class Editor {
 	void normal_mode_action(int character) noexcept;
 	void insert_mode_action(int character) noexcept;
 
+	void do_w_motion() noexcept;
+
 	void write_char(int character) noexcept;
 	void delete_char() noexcept;
 	void save() noexcept;
