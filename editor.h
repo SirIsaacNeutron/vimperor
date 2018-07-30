@@ -11,7 +11,8 @@
 
 enum class Mode {
 	NORMAL = 0,
-	INSERT
+	INSERT,
+	REPLACE
 };
 
 static const int ESCAPE_KEY = '\x1B';
@@ -41,11 +42,13 @@ class Editor {
 
 	void normal_mode_action(int character) noexcept;
 	void insert_mode_action(int character) noexcept;
+	void replace_mode_action(int character) noexcept;
 
 	void do_w_motion() noexcept;
 	void do_b_motion() noexcept;
 
-	void write_char(int character) noexcept;
+	void insert_char(int character) noexcept;
+	void replace_char(int character) noexcept;
 	void delete_char() noexcept;
 	void save() noexcept;
 	void add_new_line() noexcept;

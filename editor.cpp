@@ -24,11 +24,16 @@ std::vector<std::string> Editor::create_file_contents() noexcept {
 }
 
 void Editor::process_keypress(int character) noexcept {
-	if (current_mode == Mode::NORMAL) {
-		normal_mode_action(character);
-	}
-	else if (current_mode == Mode::INSERT) {
-		insert_mode_action(character);	
+	switch (current_mode) {
+		case Mode::NORMAL: 
+			normal_mode_action(character);
+			break;
+		case Mode::INSERT:
+			insert_mode_action(character);	
+			break;
+		case Mode::REPLACE:
+			replace_mode_action(character);
+			break;
 	}
 	screen.display(std::begin(file_contents) + top_of_screen_index,
 			std::end(file_contents),
@@ -64,6 +69,9 @@ void Editor::normal_mode_action(int character) noexcept {
 			break;
 		case 'b':
 			do_b_motion();
+			break;
+		case 'R':
+			current_mode = Mode::REPLACE;
 			break;
 		case 's':
 			save();
@@ -188,9 +196,19 @@ void Editor::insert_mode_action(int character) noexcept {
 			break;
 		default:
 			if (std::isprint(character)) {
-				write_char(character);
+				insert_char(character);
 			}
 			break;
+	}
+}
+
+void Editor::replace_mode_action(int character) noexcept {
+	if (character == ESCAPE_KEY) {
+		current_mode = Mode::NORMAL;
+		return;
+	}
+	else if (std::isprint(character)) {
+		replace_char(character);
 	}
 }
 
@@ -236,20 +254,39 @@ void Editor::add_new_line() noexcept {
 	screen.is_file_modified = true;
 }
 
-void Editor::write_char(int character) noexcept {	
+void Editor::insert_char(int character) noexcept {
 	if (file_contents_index < file_contents.size()) {
 		auto& current_line = file_contents[file_contents_index];
 		if (cursor.x < file_contents[file_contents_index].size()) {
-			current_line[cursor.x] = character;
+			current_line.insert(cursor.x, 1, character);
 
-			move_cursor_right();
 		}
 		// If we're at the end of the current line
 		else {
 			current_line.push_back(character);
 
-			move_cursor_right();
 		}
+		move_cursor_right();
+	}
+	// If we're beyond the end of the file
+	else {
+		// Append a new, empty line
+		file_contents.push_back("");
+	}
+	screen.is_file_modified = true;
+}
+
+void Editor::replace_char(int character) noexcept {	
+	if (file_contents_index < file_contents.size()) {
+		auto& current_line = file_contents[file_contents_index];
+		if (cursor.x < file_contents[file_contents_index].size()) {
+			current_line[cursor.x] = character;
+		}
+		// If we're at the end of the current line
+		else {
+			current_line.push_back(character);
+		}
+		move_cursor_right();
 	}
 	// If we're beyond the end of the file
 	else {
