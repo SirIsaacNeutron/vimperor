@@ -62,6 +62,9 @@ void Editor::normal_mode_action(int character) noexcept {
 		case 'w':
 			do_w_motion();
 			break;
+		case 'b':
+			do_b_motion();
+			break;
 		case 's':
 			save();
 			break;
@@ -153,6 +156,22 @@ void Editor::do_w_motion() noexcept {
 
 	if (next_space_index != std::string::npos) {
 		cursor.x = next_space_index + 1;	
+	}
+}
+
+void Editor::do_b_motion() noexcept {
+	const auto& current_line = file_contents[file_contents_index];
+
+	std::size_t previous_space_index = cursor.x;
+	for (; previous_space_index != 0; --previous_space_index) {
+		if (current_line[previous_space_index] == ' ') {
+			cursor.x = previous_space_index - 1;	
+			break;
+		}
+	}
+
+	if (previous_space_index == 0) {
+		cursor.x = 0;
 	}
 }
 
