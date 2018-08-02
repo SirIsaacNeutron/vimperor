@@ -195,7 +195,7 @@ void Editor::insert_mode_action(int character) noexcept {
 			add_new_line();
 			break;
 		default:
-			if (std::isprint(character)) {
+			if (std::isprint(character) || character == '\t') {
 				insert_char(character);
 			}
 			break;
