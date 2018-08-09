@@ -84,9 +84,7 @@ void Editor::move_cursor_right() noexcept {
 	if (file_contents_index < file_contents.size()
 			&& cursor.row_offset < current_line.size()) {
 		if (current_line[cursor.row_offset] == '\t') {
-			for (int i = 0; i < SPACES_FOR_TAB; ++i) {
-				++cursor.x;	
-			}
+			cursor.x += SPACES_FOR_TAB;
 			++cursor.row_offset;
 		}
 		else {
@@ -159,9 +157,7 @@ void Editor::move_cursor_left() noexcept {
 	if (cursor.row_offset > 0) {
 		const auto& current_line = file_contents[file_contents_index];
 		if (current_line[cursor.row_offset - 1] == '\t') {
-			for (int i = 0; i < SPACES_FOR_TAB; ++i) {
-				--cursor.x;
-			}
+			cursor.x -= SPACES_FOR_TAB;
 			--cursor.row_offset;
 		}
 		else {
