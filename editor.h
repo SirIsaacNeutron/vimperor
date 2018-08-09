@@ -26,7 +26,7 @@ class Editor {
 	Screen screen;
 	Mode current_mode{Mode::NORMAL};
 	std::vector<std::string> file_contents{create_file_contents()};
-	Cursor cursor{0, 0};
+	Cursor cursor{};
 	std::size_t file_contents_index = 0;
 	std::size_t top_of_screen_index = 0;
 
