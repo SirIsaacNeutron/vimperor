@@ -62,7 +62,7 @@ void Editor::normal_mode_action(int character) noexcept {
 			move_cursor_left();
 			break;
 		case 'x':
-			file_contents[file_contents_index].replace(cursor.x, 1, "");
+			file_contents[file_contents_index].replace(cursor.row_offset, 1, "");
 			break;
 		case 'w':
 			do_w_motion();
@@ -82,14 +82,16 @@ void Editor::normal_mode_action(int character) noexcept {
 void Editor::move_cursor_right() noexcept {
 	const auto& current_line = file_contents[file_contents_index];
 	if (file_contents_index < file_contents.size()
-			&& cursor.x < current_line.size()) {
-		if (current_line[cursor.x] == '\t') {
+			&& cursor.row_offset < current_line.size()) {
+		if (current_line[cursor.row_offset] == '\t') {
 			for (int i = 0; i < SPACES_FOR_TAB; ++i) {
 				++cursor.x;	
 			}
+			++cursor.row_offset;
 		}
 		else {
 			++cursor.x;
+			++cursor.row_offset;
 		}
 		screen.move_cursor(cursor);
 	}
@@ -119,9 +121,11 @@ const std::string& line_considered, const std::string& current_line) noexcept {
 	if (line_considered.size() < current_line.size()) {
 		if (line_considered.size() == 0) {
 			cursor.x = 0;
+			cursor.row_offset = 0;
 		}
 		else if (cursor.x > line_considered.size()) {
 			cursor.x = line_considered.size() - 1;
+			cursor.row_offset = cursor.x;
 		}
 	}
 }
@@ -154,6 +158,7 @@ void Editor::move_cursor_down() noexcept {
 void Editor::move_cursor_left() noexcept {
 	if (cursor.x > 0) {
 		--cursor.x;
+		--cursor.row_offset;
 		screen.move_cursor(cursor);
 	}
 }
@@ -164,6 +169,7 @@ void Editor::do_w_motion() noexcept {
 
 	if (next_space_index != std::string::npos) {
 		cursor.x = next_space_index + 1;	
+		cursor.row_offset = cursor.x;
 	}
 }
 
@@ -181,6 +187,7 @@ void Editor::do_b_motion() noexcept {
 	if (previous_space_index == 0) {
 		cursor.x = 0;
 	}
+	cursor.row_offset = cursor.x;
 }
 
 void Editor::insert_mode_action(int character) noexcept {
@@ -218,13 +225,13 @@ void Editor::delete_char() noexcept {
 		// If a line is empty and we just pressed the delete key at the left-
 		// most edge of the screen
 		auto& current_line = file_contents[file_contents_index];
-		if (cursor.x == 0 
+		if (cursor.row_offset == 0 
 				&& current_line.size() == 0) {
 			// Then delete the whole line	
 			file_contents.erase(std::begin(file_contents) + file_contents_index);
 		}
 		else {
-			current_line.replace(cursor.x, 1, "");
+			current_line.replace(cursor.row_offset, 1, "");
 		}
 		screen.is_file_modified = true;
 	}
@@ -235,10 +242,10 @@ void Editor::add_new_line() noexcept {
 	if (file_contents_index < file_contents.size()) {
 		auto& current_line = file_contents[file_contents_index];
 
-		std::string rest_of_line{std::begin(current_line) + cursor.x,
+		std::string rest_of_line{std::begin(current_line) + cursor.row_offset,
 			std::end(current_line)};
 
-		current_line.erase(cursor.x, current_line.size());
+		current_line.erase(cursor.row_offset, current_line.size());
 
 		file_contents.insert(
 				std::begin(file_contents) + file_contents_index + 1,
@@ -246,6 +253,7 @@ void Editor::add_new_line() noexcept {
 
 		move_cursor_down();
 		cursor.x = 0;
+		cursor.row_offset = 0;
 	}
 	else {
 		file_contents.push_back("");
@@ -257,8 +265,8 @@ void Editor::add_new_line() noexcept {
 void Editor::insert_char(int character) noexcept {
 	if (file_contents_index < file_contents.size()) {
 		auto& current_line = file_contents[file_contents_index];
-		if (cursor.x < file_contents[file_contents_index].size()) {
-			current_line.insert(cursor.x, 1, character);
+		if (cursor.row_offset < file_contents[file_contents_index].size()) {
+			current_line.insert(cursor.row_offset, 1, character);
 
 		}
 		// If we're at the end of the current line
@@ -279,8 +287,8 @@ void Editor::insert_char(int character) noexcept {
 void Editor::replace_char(int character) noexcept {	
 	if (file_contents_index < file_contents.size()) {
 		auto& current_line = file_contents[file_contents_index];
-		if (cursor.x < file_contents[file_contents_index].size()) {
-			current_line[cursor.x] = character;
+		if (cursor.row_offset < file_contents[file_contents_index].size()) {
+			current_line[cursor.row_offset] = character;
 		}
 		// If we're at the end of the current line
 		else {
