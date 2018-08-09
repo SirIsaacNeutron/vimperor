@@ -24,13 +24,13 @@ public:
 			std::vector<std::string>::const_iterator end,
 			const Cursor& cursor) const noexcept;
 
-	void move_cursor(const Cursor& cursor) const noexcept;
-
 	~Screen();
 private:
 	std::string file_name;
 	WINDOW* file_info_bar;
 
+	void move_cursor(const Cursor& cursor) const noexcept;
+	
 	void draw_file_info_bar() const noexcept;
 };
 #endif
