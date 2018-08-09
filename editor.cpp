@@ -156,9 +156,18 @@ void Editor::move_cursor_down() noexcept {
 }
 
 void Editor::move_cursor_left() noexcept {
-	if (cursor.x > 0) {
-		--cursor.x;
-		--cursor.row_offset;
+	if (cursor.row_offset > 0) {
+		const auto& current_line = file_contents[file_contents_index];
+		if (current_line[cursor.row_offset - 1] == '\t') {
+			for (int i = 0; i < SPACES_FOR_TAB; ++i) {
+				--cursor.x;
+			}
+			--cursor.row_offset;
+		}
+		else {
+			--cursor.x;
+			--cursor.row_offset;
+		}
 		screen.move_cursor(cursor);
 	}
 }
